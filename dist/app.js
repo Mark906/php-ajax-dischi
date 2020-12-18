@@ -94,11 +94,22 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  var source = $("#card-template").html();
+  var template = Handlebars.compile(source);
   $.ajax({
     url: 'dischi.php',
     method: 'GET',
     success: function success(data) {
-      console.log(data);
+      for (var i = 0; i < data.length; i++) {
+        var context = {
+          'poster': data[i].poster,
+          'title': data[i].title,
+          'author': data[i].author,
+          'year': data[i].year
+        };
+        var html = template(context);
+        $(".container").append(html);
+      }
     },
     error: function error() {
       console.log('errore');
